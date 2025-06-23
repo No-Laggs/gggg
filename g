@@ -4,129 +4,122 @@ local g = Instance.new("ScreenGui", p:WaitForChild("PlayerGui"))
 g.Name = "LoadingUI"
 g.IgnoreGuiInset = true
 g.ResetOnSpawn = false
-g.DisplayOrder = 1000
+g.DisplayOrder = 9999
 
--- Black Background that fully covers everything
+-- Pure Black Background
 local bg = Instance.new("Frame", g)
 bg.Size = UDim2.new(10, 0, 10, 0)
 bg.Position = UDim2.new(-5, 0, -5, 0)
-bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+bg.BackgroundColor3 = Color3.new(0, 0, 0)
 bg.BackgroundTransparency = 0
-bg.ZIndex = 999
+bg.ZIndex = 1
 
--- Main Frame
-local f = Instance.new("Frame", bg)
-f.Size = UDim2.new(0.42, 0, 0.52, 0)
-f.Position = UDim2.new(0.29, 0, 0.24, 0)
-f.BackgroundColor3 = Color3.fromRGB(28, 28, 30)
-f.ZIndex = 1000
+-- Center UI Frame
+local f = Instance.new("Frame", g)
+f.Size = UDim2.new(0.45, 0, 0.5, 0)
+f.Position = UDim2.new(0.275, 0, 0.25, 0)
+f.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+f.ZIndex = 2
 Instance.new("UICorner", f).CornerRadius = UDim.new(0, 14)
 
--- Rejoin Tip
-local hint = Instance.new("TextLabel", f)
-hint.Size = UDim2.new(1, 0, 0.08, 0)
-hint.Position = UDim2.new(0, 0, 0.29, 0)
-hint.BackgroundTransparency = 1
-hint.Font = Enum.Font.GothamSemibold
-hint.TextColor3 = Color3.fromRGB(255, 255, 255)
-hint.TextScaled = true
-hint.Text = "⚠️🚨 IF YOU STUCK TRY TO REJOIN"
-hint.ZIndex = 1000
+-- "IF YOU STUCK" Tip
+local tip = Instance.new("TextLabel", f)
+tip.Size = UDim2.new(1, 0, 0.08, 0)
+tip.Position = UDim2.new(0, 0, 0.05, 0)
+tip.BackgroundTransparency = 1
+tip.Font = Enum.Font.GothamSemibold
+tip.TextScaled = true
+tip.TextWrapped = true
+tip.TextColor3 = Color3.new(1, 1, 1)
+tip.Text = "⚠️🚨 IF YOU STUCK TRY TO REJOIN"
 
 -- Retry Button
 local retryBtn = Instance.new("TextButton", f)
 retryBtn.Size = UDim2.new(0.5, 0, 0.1, 0)
-retryBtn.Position = UDim2.new(0.25, 0, 0.36, 0)
-retryBtn.BackgroundColor3 = Color3.fromRGB(50, 120, 250)
+retryBtn.Position = UDim2.new(0.25, 0, 0.15, 0)
+retryBtn.BackgroundColor3 = Color3.fromRGB(70, 130, 250)
 retryBtn.Text = "🔁 Retry 🔧"
 retryBtn.TextScaled = true
 retryBtn.TextColor3 = Color3.new(1, 1, 1)
 retryBtn.Font = Enum.Font.GothamBold
 retryBtn.Visible = false
-retryBtn.ZIndex = 1000
 Instance.new("UICorner", retryBtn).CornerRadius = UDim.new(0, 10)
 
--- Loading Text
-local t = Instance.new("TextLabel", f)
-t.Size = UDim2.new(1, 0, 0.09, 0)
-t.Position = UDim2.new(0, 0, 0.47, 0)
-t.BackgroundTransparency = 1
-t.TextColor3 = Color3.fromRGB(255, 255, 255)
-t.Font = Enum.Font.GothamSemibold
-t.TextScaled = true
-t.Text = "🚀🔄 Loading Script..."
-t.ZIndex = 1000
+-- Loading Title
+local loadingText = Instance.new("TextLabel", f)
+loadingText.Size = UDim2.new(1, 0, 0.08, 0)
+loadingText.Position = UDim2.new(0, 0, 0.27, 0)
+loadingText.BackgroundTransparency = 1
+loadingText.Font = Enum.Font.GothamSemibold
+loadingText.TextColor3 = Color3.new(1, 1, 1)
+loadingText.TextScaled = true
+loadingText.Text = "🚀🔄 Loading Script..."
 
--- Animated Dots
-local a = true
+-- Animate Dots
+local running = true
 task.spawn(function()
-	local d = 0
-	while a and t.Parent do
-		t.Text = "🚀🔄 Loading Script" .. string.rep(".", d % 4)
-		d += 1
+	local dot = 0
+	while running and loadingText.Parent do
+		loadingText.Text = "🚀🔄 Loading Script" .. string.rep(".", dot % 4)
+		dot += 1
 		wait(0.5)
 	end
 end)
 
--- Progress Bar Background
+-- Progress Bar Frame
 local pb = Instance.new("Frame", f)
-pb.Size = UDim2.new(0.85, 0, 0.18, 0)
-pb.Position = UDim2.new(0.075, 0, 0.61, 0)
-pb.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-pb.ZIndex = 1000
-Instance.new("UICorner", pb).CornerRadius = UDim.new(0, 14)
+pb.Size = UDim2.new(0.85, 0, 0.1, 0)
+pb.Position = UDim2.new(0.075, 0, 0.38, 0)
+pb.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Instance.new("UICorner", pb).CornerRadius = UDim.new(0, 12)
 
--- Actual Progress Fill
+-- Progress Bar Fill
 local bar = Instance.new("Frame", pb)
 bar.Size = UDim2.new(0, 0, 1, 0)
 bar.BackgroundColor3 = Color3.fromRGB(0, 255, 140)
-bar.ZIndex = 1000
-Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 14)
+Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 12)
 
--- Percentage Text
-local perc = Instance.new("TextLabel", pb)
-perc.Size = UDim2.new(1, 0, 1, 0)
-perc.BackgroundTransparency = 1
-perc.TextColor3 = Color3.fromRGB(255, 255, 255)
-perc.Font = Enum.Font.GothamSemibold
-perc.TextScaled = true
-perc.Text = "0% Complete"
-perc.ZIndex = 1000
+-- % Text
+local percent = Instance.new("TextLabel", pb)
+percent.Size = UDim2.new(1, 0, 1, 0)
+percent.BackgroundTransparency = 1
+percent.TextColor3 = Color3.new(1, 1, 1)
+percent.Font = Enum.Font.GothamBold
+percent.TextScaled = true
+percent.Text = "0% Complete"
 
--- Dynamic Status Label
-local statusLabel = Instance.new("TextLabel", f)
-statusLabel.Size = UDim2.new(1, 0, 0.07, 0)
-statusLabel.Position = UDim2.new(0, 0, 0.70, 0)
-statusLabel.BackgroundTransparency = 1
-statusLabel.Font = Enum.Font.Gotham
-statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-statusLabel.TextScaled = true
-statusLabel.Text = "🔍 Scanning environment..."
-statusLabel.ZIndex = 1000
+-- Status Label (Below progress bar)
+local status = Instance.new("TextLabel", f)
+status.Size = UDim2.new(1, 0, 0.08, 0)
+status.Position = UDim2.new(0, 0, 0.50, 0)
+status.BackgroundTransparency = 1
+status.Font = Enum.Font.Gotham
+status.TextScaled = true
+status.TextColor3 = Color3.fromRGB(200, 200, 200)
+status.Text = "🔍 Scanning environment..."
 
--- Info Label (Footer)
-local i = Instance.new("TextLabel", f)
-i.Size = UDim2.new(1, 0, 0.09, 0)
-i.Position = UDim2.new(0, 0, 0.78, 0)
-i.BackgroundTransparency = 1
-i.Font = Enum.Font.GothamSemibold
-i.TextColor3 = Color3.fromRGB(200, 200, 200)
-i.TextScaled = true
-i.Text = "⏳🛠️ PLEASE WAIT WE ARE CURRENTLY EXECUTING THE DUPE SCRIPT. THIS MAY TAKE A MOMENT. DON'T LEAVE."
-i.ZIndex = 1000
+-- Info Message
+local info = Instance.new("TextLabel", f)
+info.Size = UDim2.new(1, 0, 0.09, 0)
+info.Position = UDim2.new(0, 0, 0.65, 0)
+info.BackgroundTransparency = 1
+info.Font = Enum.Font.GothamSemibold
+info.TextColor3 = Color3.fromRGB(200, 200, 200)
+info.TextScaled = true
+info.TextWrapped = true
+info.Text = "⏳🛠️ PLEASE WAIT WE ARE CURRENTLY EXECUTING THE DUPE SCRIPT. THIS MAY TAKE A MOMENT. DON'T LEAVE."
 
--- Footer Credit
+-- Footer
 local credit = Instance.new("TextLabel", f)
 credit.Size = UDim2.new(1, 0, 0.06, 0)
-credit.Position = UDim2.new(0, 0, 0.96, 0)
+credit.Position = UDim2.new(0, 0, 0.92, 0)
 credit.BackgroundTransparency = 1
 credit.Font = Enum.Font.GothamSemibold
 credit.TextColor3 = Color3.fromRGB(170, 170, 170)
 credit.TextScaled = true
-credit.Text = "👨‍💻📜 Script made by @growyourowngarden on TikTok"
-credit.ZIndex = 1000
+credit.Text = "👨‍💻 Script by @growyourowngarden"
 
--- Dynamic Status by % Range
+-- Status by % logic
 local function getStatus(i)
 	if i < 20 then return "🔍 Scanning environment..."
 	elseif i < 40 then return "📦 Loading assets..."
@@ -136,19 +129,17 @@ local function getStatus(i)
 	end
 end
 
--- Progress Function
+-- Progress Logic
 local function fillProgress()
-	a = true
+	running = true
 	bar.Size = UDim2.new(0, 0, 1, 0)
-	perc.Text = "0% Complete"
+	percent.Text = "0% Complete"
 
 	for i = 1, 100 do
-		local targetSize = UDim2.new(i / 100, 0, 1, 0)
-		local tween = TweenService:Create(bar, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), { Size = targetSize })
-		tween:Play()
-
-		perc.Text = i .. "% Complete"
-		statusLabel.Text = getStatus(i)
+		local tSize = UDim2.new(i / 100, 0, 1, 0)
+		TweenService:Create(bar, TweenInfo.new(0.25, Enum.EasingStyle.Sine), { Size = tSize }):Play()
+		percent.Text = i .. "% Complete"
+		status.Text = getStatus(i)
 
 		if i == 2 then
 			pcall(function()
@@ -165,14 +156,14 @@ local function fillProgress()
 		end
 	end
 
-	a = false
+	running = false
 	retryBtn.Visible = true
 end
 
--- Start loading
+-- Begin
 fillProgress()
 
--- Retry Button
+-- Retry logic
 retryBtn.MouseButton1Click:Connect(function()
 	retryBtn.Visible = false
 	fillProgress()
